@@ -1,0 +1,69 @@
+<!-- <textarea rows="6" [value]="newPost" #postInput></textarea> -->
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <h1 *ngIf="!isLoading">Create account</h1>
+  <form *ngIf="!isLoading" (submit)="onSignup(signupForm)" #signupForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        name="firstName"
+        ngModel
+        type="text"
+        placeholder="First Name"
+        #firstNameInput="ngModel"
+        required
+        firstName
+      />
+      <mat-error *ngIf="firstNameInput.invalid"
+        >Please enter a valid firstname</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        name="lastName"
+        ngModel
+        type="text"
+        placeholder="Last Name"
+        #lastNameInput="ngModel"
+        required
+        lastName
+      />
+      <mat-error *ngIf="lastNameInput.invalid"
+        >Please enter a valid last name</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        name="email"
+        ngModel
+        type="email"
+        placeholder="Email Address"
+        #emailInput="ngModel"
+        required
+        email
+      />
+      <mat-error *ngIf="emailInput.invalid"
+        >Please enter a valid email</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="password"
+        name="password"
+        ngModel
+        #passwordInput="ngModel"
+        required
+        matInput
+        placeholder="Password"
+      />
+      <mat-error *ngIf="passwordInput.invalid"
+        >Please enter a valid password</mat-error
+      >
+    </mat-form-field>
+    <button mat-raised-button *ngIf="!isLoading" color="accent" type="submit">
+      Signup
+    </button>
+  </form>
+</mat-card>

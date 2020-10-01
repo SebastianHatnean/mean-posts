@@ -1,1 +1,67 @@
-<mat-toolbar color="primary">MyMessages</mat-toolbar>
+<mat-toolbar color="primary">
+  <!-- <a routerLink="/">Blog</a> -->
+  <img
+    routerLink="/"
+    src="../../assets/blogging-logo.png"
+    alt="blogging-logo"
+  />
+  <span class="spacer"></span>
+  <ul>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/create" routerLinkActive="mat-accent"
+        >New Post</a
+      >
+    </li>
+    <!-- <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent"
+        >Login</a
+      >
+    </li> -->
+    <!-- <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent"
+        >Signup</a
+      >
+    </li>
+    <li *ngIf="userIsAuthenticated">
+      <button mat-button (click)="onLogout()">Logout</button>
+    </li> -->
+
+    <li>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          *ngIf="!userIsAuthenticated"
+          routerLink="/auth/login"
+          routerLinkActive="mat-accent"
+        >
+          <mat-icon>login</mat-icon>
+          <span>Login</span>
+        </button>
+        <button
+          mat-menu-item
+          *ngIf="!userIsAuthenticated"
+          routerLink="/auth/signup"
+          routerLinkActive="mat-accent"
+        >
+          <span>Create account</span>
+        </button>
+        <button mat-menu-item *ngIf="userIsAuthenticated" (click)="onLogout()">
+          <mat-icon class="logout-icon">login</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </li>
+    <li>
+      <p *ngIf="userIsAuthenticated">
+        Welcome back, {{ authenticatedUser.firstName }}
+      </p>
+    </li>
+  </ul>
+</mat-toolbar>

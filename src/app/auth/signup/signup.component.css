@@ -1,0 +1,24 @@
+mat-form-field {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+}
+
+mat-card {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 400;
+  color: #3f51b5;
+}
+
+mat-spinner {
+  margin: auto;
+}
+

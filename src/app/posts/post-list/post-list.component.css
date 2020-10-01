@@ -1,8 +1,33 @@
 :host {
   display: block;
   margin-top: 1rem;
+  width: 60%;
+  margin: auto;
 }
 
 .info-text {
   text-align: center;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.post-image {
+  width: 100%;
+}
+
+.post-image img {
+  width: 100%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+mat-paginator {
+  margin-top: 1rem;
+}
+
+.post-author {
+  margin-top: 3rem;
+  color: #0000008a;
+  font-size: 13px;
 }
