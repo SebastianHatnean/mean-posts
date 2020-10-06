@@ -1,13 +1,16 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-// middleware: function that gets executed on the incoming request
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWT_KEY);
-    req.userData = { email: decodedToken.email, userId: decodedToken.userId, postCreator: decodedToken.email };
+    req.userData = {
+      email: decodedToken.email,
+      userId: decodedToken.userId,
+      postCreator: decodedToken.email,
+    };
     next();
   } catch (error) {
-    res.status(401).json({ message: 'You are not authenticated!' });
+    res.status(401).json({ message: "You are not authenticated!" });
   }
-}
+};

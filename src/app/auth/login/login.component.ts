@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       authStatus => {
         this.isLoading = false;
         this.authenticatedUser = this.authService.getAuthenticatedUser();
-        console.log(this.authenticatedUser);
       }
     );
   }

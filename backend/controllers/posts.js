@@ -21,9 +21,9 @@ exports.createPost = (req, res, next) => {
         },
       });
     })
-    .catch((error) => {
+    .catch(error => {
       res.status(500).json({
-        message: "Creating a post failed!",
+        message: "Creating a post failed!"
       });
     });
 };
@@ -52,13 +52,13 @@ exports.updatePost = (req, res, next) => {
     })
     .catch((error) => {
       res.status(500).json({
-        message: "Couldn't update post!",
+        message: "Couldn't update post!"
       });
     });
 };
 
 exports.getPosts = (req, res, next) => {
-  const pageSize = +req.query.pageSize;
+  const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = Post.find();
   let fetchedPosts;
@@ -69,8 +69,7 @@ exports.getPosts = (req, res, next) => {
   postQuery
     .then((documents) => {
       fetchedPosts = documents;
-      // return Post.count();
-      return Post.countDocuments();
+      return Post.count();
     })
     .then((count) => {
       res.status(200).json({
@@ -102,7 +101,7 @@ exports.getPost = (req, res, next) => {
     });
 };
 
-exports.deletePost =  (req, res, next) => {
+exports.deletePost = (req, res, next) => {
   Post.deleteOne({ _id: req.params.id, creator: req.userData.userId, postCreator: req.userData.postCreator })
     .then((result) => {
       if (result.n > 0) {

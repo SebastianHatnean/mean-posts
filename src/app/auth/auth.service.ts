@@ -62,11 +62,9 @@ export class AuthService {
         authData
       )
       .subscribe((response) => {
-        console.log(response);
         const token = response.token;
         this.token = token;
         if (token) {
-          console.log(response);
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;

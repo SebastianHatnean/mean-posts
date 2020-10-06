@@ -2,7 +2,8 @@
   "name": "mean-app",
   "version": "0.0.0",
   "scripts": {
-    "start": "./backend/server.js"
+    "start": "ng serve",
+    "start:server": "nodemon ./backend/server.js"
   },
   "private": true,
   "dependencies": {

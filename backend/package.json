@@ -9,6 +9,20 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.26",
     "mongoose-unique-validator": "^2.0.3",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "@angular/animations": "~9.0.0",
+    "@angular/cdk": "^9.2.4",
+    "@angular/common": "~9.0.0",
+    "@angular/compiler": "~9.0.0",
+    "@angular/core": "~9.0.0",
+    "@angular/forms": "~9.0.0",
+    "@angular/material": "^9.2.4",
+    "@angular/platform-browser": "~9.0.0",
+    "@angular/platform-browser-dynamic": "~9.0.0",
+    "@angular/router": "~9.0.0",
+    "bcrypt": "^5.0.0",
+    "rxjs": "~6.5.4",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2"
   }
 }

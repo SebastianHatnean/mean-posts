@@ -63,7 +63,6 @@ export class PostsService {
   }
 
   addPost(title: string, content: string, image: File) {
-    // const post: Post = { id: null, title, content };
     const postData = new FormData();
     postData.append('title', title);
     postData.append('content', content);
@@ -79,7 +78,6 @@ export class PostsService {
   }
 
   updatePost(id: string, title: string, content: string, image: File | string) {
-    // const post: Post = { id, title, content, imagePath: null };
     let postData: Post | FormData;
     if (typeof image === 'object') {
       postData = new FormData();
