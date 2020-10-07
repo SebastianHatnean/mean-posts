@@ -58,7 +58,7 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.getPosts = (req, res, next) => {
-  const pageSize = +req.query.pagesize;
+  const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
   const postQuery = Post.find();
   let fetchedPosts;
@@ -69,7 +69,7 @@ exports.getPosts = (req, res, next) => {
   postQuery
     .then((documents) => {
       fetchedPosts = documents;
-      return Post.count();
+      return Post.countDocuments();
     })
     .then((count) => {
       res.status(200).json({

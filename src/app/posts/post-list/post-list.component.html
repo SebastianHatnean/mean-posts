@@ -1,4 +1,23 @@
 <mat-spinner *ngIf="isLoadiing"></mat-spinner>
+<div class="add-blog-container" *ngIf="userIsAuthenticated && !isLoadiing">
+  <div class="add-blog-wrap">
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Example icon button with a bookmark icon"
+      routerLink="/create"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <span>New post</span>
+
+    <!-- <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/create" routerLinkActive="mat-accent"
+        >New Post</a
+      >
+    </li> -->
+  </div>
+</div>
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoadiing">
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
@@ -10,7 +29,9 @@
     <p>{{ post.content }}</p>
     <p class="post-author">Post created by: {{ post.postCreator }}</p>
     <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator">
-      <a [routerLink]="['/edit/', post.id]" mat-button color="primary">EDIT</a>
+      <button [routerLink]="['/edit/', post.id]" mat-button color="primary">
+        EDIT
+      </button>
       <button mat-button color="warn" (click)="onDelete(post.id)">
         DELETE
       </button>
