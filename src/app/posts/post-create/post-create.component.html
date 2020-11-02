@@ -1,4 +1,4 @@
-<!-- <textarea rows="6" [value]="newPost" #postInput></textarea> -->
+<section class="forest-section"></section>
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
@@ -7,7 +7,7 @@
         matInput
         type="text"
         formControlName="title"
-        placeholder="Post Title"
+        placeholder="Post Title*"
       />
       <mat-error *ngIf="form.get('title').invalid"
         >Please enter a post title</mat-error
@@ -30,14 +30,24 @@
         matInput
         rows="6"
         formControlName="content"
-        placeholder="Post Content"
+        placeholder="Post Content*"
       ></textarea>
       <mat-error *ngIf="form.get('content').invalid"
         >Please enter a post content</mat-error
       >
     </mat-form-field>
-    <button mat-raised-button color="accent" type="submit">
-      Save post
-    </button>
+    <mat-form-field>
+      <mat-label>Choose post category</mat-label>
+      <mat-select formControlName="category" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category.categoryNumber">
+          {{ category.categoryName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('category').invalid"
+        >Please choose a category</mat-error
+      >
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Save post</button>
   </form>
 </mat-card>

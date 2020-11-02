@@ -1,4 +1,4 @@
-<!-- <textarea rows="6" [value]="newPost" #postInput></textarea> -->
+<section class="forest-section"></section>
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <h1 *ngIf="!isLoading">Create account</h1>
@@ -31,6 +31,36 @@
       />
       <mat-error *ngIf="lastNameInput.invalid"
         >Please enter a valid last name</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        name="occupation"
+        ngModel
+        type="text"
+        placeholder="Occupation (ex: Frontend Developer)"
+        #occupationInput="ngModel"
+        required
+        occupation
+      />
+      <mat-error *ngIf="occupationInput.invalid"
+        >Please enter a valid occupation</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        name="company"
+        ngModel
+        type="text"
+        placeholder="Company"
+        #companyInput="ngModel"
+        required
+        company
+      />
+      <mat-error *ngIf="companyInput.invalid"
+        >Please enter a valid occupation</mat-error
       >
     </mat-form-field>
     <mat-form-field>

@@ -1,0 +1,32 @@
+<section class="forest-section"></section>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div class="container">
+  <div class="info-wrapper">
+    <div *ngIf="isAccountVerified">
+      <h1>The account has been verified!<br />You can now login!</h1>
+
+      <button routerLink="/auth/login" mat-raised-button color="primary">
+        LOGIN
+      </button>
+    </div>
+    <div *ngIf="isAlreadyVerified">
+      <h1>This user has already been verified.<br />Please login!</h1>
+
+      <button routerLink="/auth/login" mat-raised-button color="primary">
+        LOGIN
+      </button>
+    </div>
+    <div *ngIf="userNotFound">
+      <h1>
+        We were unable to find a valid user. <br />Please try again or create a
+        valid account.
+      </h1>
+
+      <button routerLink="/auth/signup" mat-raised-button color="primary">
+        CREATE ACCOUNT
+      </button>
+    </div>
+  </div>
+</div>

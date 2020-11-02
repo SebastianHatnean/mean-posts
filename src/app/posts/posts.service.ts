@@ -28,10 +28,15 @@ export class PostsService {
               return {
                 title: post.title,
                 content: post.content,
+                category: post.category,
                 id: post._id,
                 imagePath: post.imagePath,
                 creator: post.creator,
-                postCreator: post.postCreator
+                postCreator: post.postCreator,
+                occupation: post.occupation,
+                company: post.company,
+                firstName: post.firstName,
+                lastName: post.lastName,
               };
             }),
             maxPosts: postData.maxPosts,
@@ -43,6 +48,78 @@ export class PostsService {
         this.postsUpdated.next({
           posts: [...this.posts],
           postCount: transdormedPostData.maxPosts,
+        });
+      });
+  }
+
+  getPostsByCategory(category: any) {
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        BACKEND_URL + 'category/' + category
+      )
+      .pipe(
+        map((postData) => {
+          return {
+            posts: postData.posts.map((post) => {
+              return {
+                title: post.title,
+                content: post.content,
+                category: post.category,
+                id: post._id,
+                imagePath: post.imagePath,
+                creator: post.creator,
+                postCreator: post.postCreator,
+                occupation: post.occupation,
+                company: post.company,
+                firstName: post.firstName,
+                lastName: post.lastName,
+              };
+            }),
+            maxPosts: postData.maxPosts,
+          };
+        })
+      )
+      .subscribe((transformedPostData) => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts,
+        });
+      });
+  }
+
+  getPostsByCreator(creator: any) {
+    this.http
+      .get<{ message: string; posts: any; maxPosts: number }>(
+        BACKEND_URL + 'creator/' + creator
+      )
+      .pipe(
+        map((postData) => {
+          return {
+            posts: postData.posts.map((post) => {
+              return {
+                title: post.title,
+                content: post.content,
+                category: post.category,
+                id: post._id,
+                imagePath: post.imagePath,
+                creator: post.creator,
+                postCreator: post.postCreator,
+                occupation: post.occupation,
+                company: post.company,
+                firstName: post.firstName,
+                lastName: post.lastName,
+              };
+            }),
+            maxPosts: postData.maxPosts,
+          };
+        })
+      )
+      .subscribe((transformedPostData) => {
+        this.posts = transformedPostData.posts;
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: transformedPostData.maxPosts,
         });
       });
   }
@@ -59,25 +136,51 @@ export class PostsService {
       imagePath: string;
       creator: string;
       postCreator: string;
+      category: string;
+      company: string;
+      occupation: string;
+      firstName: string;
+      lastName: string;
     }>(BACKEND_URL + id);
   }
 
-  addPost(title: string, content: string, image: File) {
+  addPost(
+    title: string,
+    content: string,
+    image: File,
+    category: string,
+    occupation: string,
+    company: string,
+    firstName: string,
+    lastName: string
+  ) {
     const postData = new FormData();
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image, title);
+    postData.append('category', category);
+    postData.append('occupation', occupation);
+    postData.append('company', company);
+    postData.append('firstName', firstName);
+    postData.append('lastName', lastName);
     this.http
-      .post<{ message: string; post: Post }>(
-        BACKEND_URL,
-        postData
-      )
+      .post<{ message: string; post: Post }>(BACKEND_URL, postData)
       .subscribe((response) => {
         this.router.navigate(['/']);
       });
   }
 
-  updatePost(id: string, title: string, content: string, image: File | string) {
+  updatePost(
+    id: string,
+    title: string,
+    content: string,
+    image: File | string,
+    category: string,
+    occupation: string,
+    company: string,
+    firstName: string,
+    lastName: string
+  ) {
     let postData: Post | FormData;
     if (typeof image === 'object') {
       postData = new FormData();
@@ -85,18 +188,32 @@ export class PostsService {
       postData.append('title', title);
       postData.append('content', content);
       postData.append('image', image, title);
+      postData.append('category', category);
+      postData.append('occupation', occupation);
+      postData.append('company', company);
+      postData.append('firstName', firstName);
+      postData.append('lastName', lastName);
     } else {
-      postData = { id, title, content, imagePath: image, creator: null, postCreator: null };
+      postData = {
+        id,
+        title,
+        content,
+        imagePath: image,
+        creator: null,
+        postCreator: null,
+        category,
+        occupation,
+        company,
+        firstName,
+        lastName,
+      };
     }
-    this.http
-      .put(BACKEND_URL + id, postData)
-      .subscribe((response) => {
-        this.router.navigate(['/']);
-      });
+    this.http.put(BACKEND_URL + id, postData).subscribe((response) => {
+      this.router.navigate(['/']);
+    });
   }
 
   deletePost(postId: string) {
-    return this.http
-      .delete(BACKEND_URL + postId);
+    return this.http.delete(BACKEND_URL + postId);
   }
 }

@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     req.userData = {
       email: decodedToken.email,
       userId: decodedToken.userId,
-      postCreator: decodedToken.email,
+      postCreator: decodedToken.email
     };
     next();
   } catch (error) {

@@ -1,0 +1,154 @@
+<mat-spinner *ngIf="isLoadiing"></mat-spinner>
+<div class="row">
+  <div class="col-md-6 col-sm-12 card-container">
+    <h2>Most appreciated article</h2>
+    <div class="card" *ngIf="firstPost">
+      <div class="card-header-cat">
+        <!-- <img [src]="post.imagePath" [alt]="post.title" /> -->
+        <div>
+          <img [src]="firstPost.imagePath" [alt]="firstPost.title" />
+          <!-- <img src="../../../assets/dream-car.jpg" alt="dream-car" /> -->
+        </div>
+        <div class="post-info">
+          <div>
+            <mat-icon>account_circle</mat-icon>
+            <span> {{ firstPost.firstName }} {{ firstPost.lastName }} </span>
+          </div>
+          <div>
+            <mat-icon>calendar_today</mat-icon>
+            <span>January 20, 2020</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- <div [ngSwitch]="post.category">
+          <span class="tag tag-teal" *ngSwitchCase="1">Cinema</span>
+          <span class="tag tag-teal" *ngSwitchCase="2">Animal</span>
+          <span class="tag tag-teal" *ngSwitchCase="3">General</span>
+          <span class="tag tag-teal" *ngSwitchCase="4">Music</span>
+          <span class="tag tag-teal" *ngSwitchCase="5">Nature</span>
+          <span class="tag tag-teal" *ngSwitchCase="6">Technology</span>
+          <span class="tag tag-teal" *ngSwitchCase="7">Office</span>
+        </div> -->
+        <h4>
+          {{ firstPost.title }}
+        </h4>
+        <div class="post-content">
+          <p>
+            {{ firstPost.content }}
+          </p>
+        </div>
+      </div>
+      <div class="post-actions">
+        <button (click)="openModal(firstPost)" mat-raised-button color="info">
+          Read more
+        </button>
+        <section *ngIf="userIsAuthenticated && userId === firstPost.creator">
+          <button
+            [routerLink]="['/edit/', firstPost.id]"
+            mat-raised-button
+            color="primary"
+          >
+            EDIT
+          </button>
+          <button mat-raised-button color="warn" (click)="onDelete(firstPost.id)">
+            DELETE
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="categories-container col-md-4 col-sm-12">
+    <h2>Categories</h2>
+    <ul>
+      <li (click)="onPostCategoryClick('1')">Cinema</li>
+      <li (click)="onPostCategoryClick('2')">Animal</li>
+      <li (click)="onPostCategoryClick('3')">General</li>
+      <li (click)="onPostCategoryClick('4')">Music</li>
+      <li (click)="onPostCategoryClick('5')">Nature</li>
+      <li (click)="onPostCategoryClick('6')">Technology</li>
+      <li (click)="onPostCategoryClick('7')">Office</li>
+    </ul>
+  </div>
+</div>
+
+<p *ngIf="!posts.length && !isLoadiing" class="info-text mat-body-1">
+  No posts added yet!
+</p>
+
+<!-- modal -->
+<div class="modal" *ngIf="openViewModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <!-- <h3 class="text-left">Confirmare rezervare</h3> -->
+      <span class="close text-right" (click)="closeModal()"> &times;</span>
+      <div [ngSwitch]="postToView.category">
+        <p *ngSwitchCase="1">Cinema</p>
+        <p *ngSwitchCase="2">Animal</p>
+        <p *ngSwitchCase="3">General</p>
+        <p *ngSwitchCase="4">Music</p>
+        <p *ngSwitchCase="5">Nature</p>
+        <p *ngSwitchCase="6">Technology</p>
+        <p *ngSwitchCase="7">Office</p>
+      </div>
+      <div class="article-title">
+        <h1>
+          {{ postToView.title }}
+        </h1>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-info row">
+        <div class="article-content col-md-6 col-sm-6">
+          <p>CONTENTS</p>
+          <div class="contents-wrap">
+            <p>1. Keep Learning (and Practicing) New Things</p>
+            <p>2. Learn in Multiple Ways</p>
+            <p>3. Teach What You've Learned to Another Person</p>
+            <p>4. Conclusion</p>
+          </div>
+        </div>
+        <div class="article-author-wrap col-md-6 col-sm-6">
+          <div>
+            <img
+              class="img-round"
+              src="../../../assets/anonim-user.png"
+              alt="anonim-user"
+            />
+            <div class="article-author">
+              {{ postToView.firstName }} {{ postToView.lastName }}
+            </div>
+            <div class="author-info">
+              {{ postToView.occupation }} at {{ postToView.company }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="image-cover">
+        <!-- to add real image -->
+        <!-- <img src="../../../assets/dream-car.jpg" alt="dream-car" /> -->
+        <img [src]="postToView.imagePath" [alt]="postToView.title" />
+      </div>
+      <p class="article-content">{{ postToView.content }}</p>
+    </div>
+    <div class="modal-social">
+      <p>Share this article with your friends</p>
+      <div class="social">
+        <a href="https://ro-ro.facebook.com/" target="_blank"
+          ><i class="fab fa-facebook fa-3x"></i
+        ></a>
+        <a href="https://www.instagram.com/" target="_blank"
+          ><i class="fab fa-instagram fa-3x"></i
+        ></a>
+        <a href="https://twitter.com/explore" target="_blank"
+          ><i class="fab fa-twitter fa-3x"></i
+        ></a>
+        <a href="https://www.linkedin.com/" target="_blank"
+          ><i class="fab fa-linkedin fa-3x"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</div>

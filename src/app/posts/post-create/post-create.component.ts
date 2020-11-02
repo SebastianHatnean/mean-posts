@@ -17,6 +17,15 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
+  categories: any[] = [
+    { categoryNumber: '1', categoryName: 'Cinema' },
+    { categoryNumber: '2', categoryName: 'Animal' },
+    { categoryNumber: '3', categoryName: 'General' },
+    { categoryNumber: '4', categoryName: 'Music' },
+    { categoryNumber: '5', categoryName: 'Nature' },
+    { categoryNumber: '6', categoryName: 'Technology' },
+    { categoryNumber: '7', categoryName: 'Office' },
+  ];
   private mode = 'create';
   private postId: string;
   private authStatusSub: Subscription;
@@ -38,6 +47,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         validators: [Validators.required, Validators.minLength(3)],
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
+      category: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {
         validators: [Validators.required],
         asyncValidators: [mimeType],
@@ -56,12 +66,18 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             content: postData.content,
             imagePath: postData.imagePath,
             creator: postData.creator,
-            postCreator: postData.postCreator
+            postCreator: postData.postCreator,
+            category: postData.category,
+            occupation: postData.occupation,
+            company: postData.company,
+            firstName: postData.firstName,
+            lastName: postData.lastName,
           };
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
-            image: this.post.imagePath
+            image: this.post.imagePath,
+            category: this.post.category,
           });
         });
       } else {
@@ -88,12 +104,21 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
+    const firstName = localStorage.getItem('firstName');
+    const lastName = localStorage.getItem('lastName');
+    const occupation = localStorage.getItem('occupation');
+    const company = localStorage.getItem('company');
     this.isLoading = true;
     if (this.mode === 'create') {
       this.postsService.addPost(
         this.form.value.title,
         this.form.value.content,
-        this.form.value.image
+        this.form.value.image,
+        this.form.value.category,
+        occupation,
+        company,
+        firstName,
+        lastName,
       );
     } else {
       this.postsService.updatePost(
@@ -101,6 +126,11 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.form.value.title,
         this.form.value.content,
         this.form.value.image,
+        this.form.value.category,
+        occupation,
+        company,
+        firstName,
+        lastName,
       );
     }
     this.form.reset();

@@ -1,0 +1,27 @@
+mat-spinner {
+  margin: auto;
+}
+
+.container {
+  margin-top: 2rem;
+}
+
+h1 {
+  text-align: center;
+  margin: auto;
+}
+
+.info-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.info-wrapper > div {
+  text-align: center;
+}
+
+button {
+  margin: 2rem 0;
+}

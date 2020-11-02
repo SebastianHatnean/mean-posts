@@ -3,4 +3,6 @@ export interface AuthData {
   password: string;
   firstName?: string;
   lastName?: string;
+  occupation?: string;
+  company?: string;
 }

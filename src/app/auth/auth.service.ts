@@ -14,6 +14,9 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
   private postCreator: string;
+  private postCreatorName: string;
+  private postCreatorOccupation: string;
+  private postCreatorCompany: string;
   private authenticatedUser: any = {};
   private authStatusListener = new Subject<boolean>();
 
@@ -35,6 +38,18 @@ export class AuthService {
     return this.postCreator;
   }
 
+  getPostCreatorName() {
+    return this.postCreatorName;
+  }
+
+  getPostCreatorOccupation() {
+    return this.postCreatorOccupation;
+  }
+
+  getPostCreatorCompany() {
+    return this.postCreatorCompany;
+  }
+
   getAuthenticatedUser() {
     return this.authenticatedUser;
   }
@@ -43,43 +58,84 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  createUser(email: string, password: string, firstName: string, lastName: string) {
-    const authData: AuthData = { email, password, firstName, lastName };
-    this.http
-      .post(BACKEND_URL + '/signup', authData)
-      .subscribe(() => {
+  createUser(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    occupation: string,
+    company: string
+  ) {
+    const authData: AuthData = {
+      email,
+      password,
+      firstName,
+      lastName,
+      occupation,
+      company,
+    };
+    this.http.post(BACKEND_URL + 'signup', authData).subscribe(
+      () => {
         this.router.navigate(['/']);
-      }, error => {
+      },
+      (error) => {
         this.authStatusListener.next(false);
-      });
+      }
+    );
   }
 
   login(email: string, password: string) {
     const authData: AuthData = { email, password };
     this.http
-      .post<{ token: string; expiresIn: number, userId: string, email: string, lastName: string, firstName: string }>(
-        BACKEND_URL + '/login',
-        authData
-      )
-      .subscribe((response) => {
-        const token = response.token;
-        this.token = token;
-        if (token) {
-          const expiresInDuration = response.expiresIn;
-          this.setAuthTimer(expiresInDuration);
-          this.isAuthenticated = true;
-          this.userId = response.userId;
-          this.authenticatedUser.firstName = response.firstName;
-          this.authenticatedUser.lastName = response.lastName;
-          this.authStatusListener.next(true);
-          const now = new Date();
-          const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-          this.saveAuthData(token, expirationDate, this.userId, this.authenticatedUser.firstName, this.authenticatedUser.lastName);
-          this.router.navigate(['/']);
+      .post<{
+        token: string;
+        expiresIn: number;
+        userId: string;
+        email: string;
+        lastName: string;
+        firstName: string;
+        occupation: string;
+        company: string;
+      }>(BACKEND_URL + 'login', authData)
+      .subscribe(
+        (response) => {
+          const token = response.token;
+          this.token = token;
+          if (token) {
+            const expiresInDuration = response.expiresIn;
+            this.setAuthTimer(expiresInDuration);
+            this.isAuthenticated = true;
+            this.userId = response.userId;
+            this.authenticatedUser.firstName = response.firstName;
+            this.authenticatedUser.lastName = response.lastName;
+            this.authenticatedUser.occupation = response.occupation;
+            this.authenticatedUser.company = response.company;
+            this.authStatusListener.next(true);
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+            this.saveAuthData(
+              token,
+              expirationDate,
+              this.userId,
+              this.authenticatedUser.firstName,
+              this.authenticatedUser.lastName,
+              this.authenticatedUser.occupation,
+              this.authenticatedUser.company
+            );
+            this.router.navigate(['/']);
+          }
+        },
+        (error) => {
+          this.authStatusListener.next(false);
         }
-      }, error => {
-        this.authStatusListener.next(false);
-      });
+      );
+  }
+
+  confirmEmail(token) {
+    return this.http
+      .post(BACKEND_URL + 'confirmation', { token });
   }
 
   autoAuthUser() {
@@ -93,6 +149,8 @@ export class AuthService {
       this.token = authInformation.token;
       this.authenticatedUser.firstName = authInformation.firstName;
       this.authenticatedUser.lastName = authInformation.lastName;
+      this.authenticatedUser.occupation = authInformation.occupation;
+      this.authenticatedUser.company = authInformation.company;
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
@@ -117,12 +175,22 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string, firstName: string, lastName: string) {
+  private saveAuthData(
+    token: string,
+    expirationDate: Date,
+    userId: string,
+    firstName: string,
+    lastName: string,
+    occupation: string,
+    company: string
+  ) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
     localStorage.setItem('firstName', firstName);
     localStorage.setItem('lastName', lastName);
+    localStorage.setItem('occupation', occupation);
+    localStorage.setItem('company', company);
   }
 
   private clearAuthData() {
@@ -131,6 +199,8 @@ export class AuthService {
     localStorage.removeItem('userId');
     localStorage.removeItem('firstName');
     localStorage.removeItem('lastName');
+    localStorage.removeItem('occupation');
+    localStorage.removeItem('company');
   }
 
   private getAuthData() {
@@ -139,11 +209,23 @@ export class AuthService {
     const userId = localStorage.getItem('userId');
     const firstName = localStorage.getItem('firstName');
     const lastName = localStorage.getItem('lastName');
+    const occupation = localStorage.getItem('occupation');
+    const company = localStorage.getItem('company');
     if (!token && !expirationDate) {
       return;
     }
     return {
-      token, expirationDate: new Date(expirationDate), userId, firstName, lastName
+      token,
+      expirationDate: new Date(expirationDate),
+      userId,
+      firstName,
+      lastName,
+      occupation,
+      company,
     };
+  }
+
+  sendEmail(data) {
+    return this.http.post(BACKEND_URL + 'sendEmail', data);
   }
 }
